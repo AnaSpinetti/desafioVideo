@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vídeo</title>
+</head>
+<body>
+    <!--O atributo "controls faz aparecer os controles do vídeo, o autoplay faz ele iniciar assim que a página carregar e o noDownload no controlList faz com que o ícone de download suma"-->
+    <video  id="video" width="800" height="450" controls controlsList="noDownload">
+        <source src="/DesafioVideo/The grave Call - Feeling.MOV" type="video/mp4">
+    </video>
+
+    <!--Barra de progresso-->
+    <div wm-progresso="video" class="progresso">
+        <div></div>
+    </div>
+
+    <!--Botões-->
+    <div>
+        <button wm-play="video" onclick="playPause()">Play</button>
+        <button wm-pause="video" onclick="playPause()">Pause</button>
+    </div>
+
+
+    <style>
+        .progresso{
+            height: 20px;
+            width: 600px;
+            border: solid 1px gray;
+            margin: 10px;
+        }
+
+        .progresso > div {
+            height: 100%;
+            background-color: green;
+            color: white;
+            width: 0%;
+            text-align: right;
+            font-size: 14px;
+        }
+    </style>
+
+    <script>
+        function videoConfig(id) {  
+            const video = document.getElementById(id)
+
+            //Bloqueando o menu de contexto do vídeo
+            video.oncontextmenu = () => false
+
+            //Play e pause
+            document.querySelector(`[wm-play=${id}]`).onclick = event => video.play()
+            document.querySelector(`[wm-pause=${id}]`).onclick = event => video.pause()
+
+            //Pegando o progresso do vídeo e alterando o tamanho da div conforme progresso
+            setInterval(() => {
+                const percentualVideo = (video.currentTime / video.duration) * 100
+                const percentualDiv = document.querySelector(`[wm-progresso=${id}] > div`)
+
+                percentualDiv.style.width = `${percentualVideo}%`
+                percentualDiv.innerHTML = `${percentualVideo.toFixed(1)}%`
+            }, 500);
+    
+        }
+
+        videoConfig('video')
+    </script>
+</body>
+</html>
